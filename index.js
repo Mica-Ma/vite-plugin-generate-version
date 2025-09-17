@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS = {
   includeCommitDate: true,
   timeZone: 'Asia/Shanghai',
   customFields: {},
-  generateOnDev: false,
+  generateOnDev: true,
   cacheBuster: true,
   logLevel: 'info',
 }
