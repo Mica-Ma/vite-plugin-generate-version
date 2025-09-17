@@ -37,18 +37,23 @@
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vite": "^5.4.20"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/vite-plugin-generate-version.git"
+    "url": "https://github.com/Mica-Ma/vite-plugin-generate-version.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/vite-plugin-generate-version/issues"
+    "url": "https://github.com/Mica-Ma/vite-plugin-generate-version/issues"
   },
-  "homepage": "https://github.com/your-username/vite-plugin-generate-version#readme",
+  "homepage": "https://github.com/Mica-Ma/vite-plugin-generate-version#readme",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node test-generate-version.js",
+    "test:basic": "node test-generate-version.js --path test-output --files json,js",
+    "test:full": "node test-generate-version.js --path test-output --files json,js,txt,ts",
+    "test:minimal": "node test-generate-version.js --path test-output --files json --no-author --no-commit-date",
+    "test:help": "node test-generate-version.js --help",
     "lint": "eslint *.js lib/*.js",
     "format": "prettier --write *.js lib/*.js *.json *.md",
     "prepare": "git log --oneline -10 > CHANGELOG.md",
@@ -56,7 +61,7 @@
   },
   "funding": {
     "type": "github",
-    "url": "https://github.com/sponsors/your-username"
+    "url": "https://github.com/sponsors/Mica-Ma"
   },
   "publishConfig": {
     "access": "public",
