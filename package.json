@@ -1,0 +1,65 @@
+{
+  "name": "vite-plugin-generate-version",
+  "version": "1.0.0",
+  "description": "A powerful Vite plugin that automatically generates comprehensive version information files based on Git repository data with TypeScript support",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "version",
+    "git",
+    "build",
+    "frontend",
+    "typescript",
+    "ci-cd",
+    "deployment",
+    "versioning"
+  ],
+  "author": {
+    "name": "machao",
+    "email": "your-email@example.com"
+  },
+  "license": "MIT",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "lib/",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "peerDependencies": {
+    "vite": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "typescript": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/vite-plugin-generate-version.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/vite-plugin-generate-version/issues"
+  },
+  "homepage": "https://github.com/your-username/vite-plugin-generate-version#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint *.js lib/*.js",
+    "format": "prettier --write *.js lib/*.js *.json *.md",
+    "prepare": "git log --oneline -10 > CHANGELOG.md",
+    "version": "npm run prepare && git add CHANGELOG.md"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/your-username"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
