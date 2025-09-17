@@ -35,7 +35,8 @@ export default defineConfig({
     generateVersion({
       path: 'public',
       files: ['json', 'js', 'txt'],
-      injectScript: true
+      injectScript: true, // 是否注入环境
+      generateOnDev: true, // 开发环境是否开启
     })
   ]
 })

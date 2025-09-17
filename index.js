@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS = {
   includeCommitDate: true,
   timeZone: 'Asia/Shanghai',
   customFields: {},
-  generateOnDev: true,
+  generateOnDev: false,
   cacheBuster: true,
   logLevel: 'info',
 }
@@ -159,7 +159,11 @@ function generateVersionVitePlugin(options = {}) {
       enforce: 'post',
       transform(html, context) {
         // 如果启用了脚本注入，在body结束标签前插入version.js脚本
-        if (validatedOptions.injectScript && validatedOptions.files.includes('js')) {
+        if (
+          validatedOptions.injectScript &&
+          validatedOptions.files.includes('js') &&
+          (isProduction || validatedOptions.generateOnDev)
+        ) {
           const cacheBuster = validatedOptions.cacheBuster ? `?v=${Date.now()}` : ''
           const versionScript = `<script src="${validatedOptions.scriptPath}${cacheBuster}" defer></script>`
 
