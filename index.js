@@ -1,4 +1,4 @@
-const generateVersion = require('./lib/generate-version')
+const { generateVersion, clearVersionFiles } = require('./lib/generate-version')
 
 /**
  * 默认配置
@@ -152,6 +152,9 @@ function generateVersionVitePlugin(options = {}) {
             this.warn(`版本文件生成失败: ${error.message}`)
           }
         }
+      } else {
+        // 清除历史版本文件
+        clearVersionFiles()
       }
     },
 
@@ -167,7 +170,7 @@ function generateVersionVitePlugin(options = {}) {
           const cacheBuster = validatedOptions.cacheBuster ? `?v=${Date.now()}` : ''
           const versionScript = `<script src="${validatedOptions.scriptPath}${cacheBuster}" defer></script>`
 
-          // 更智能的脚本注入
+          // 脚本注入
           if (html.includes('</body>')) {
             return html.replace('</body>', `  ${versionScript}\n</body>`)
           } else if (html.includes('</html>')) {

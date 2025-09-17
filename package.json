@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-generate-version",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "A powerful Vite plugin that automatically generates comprehensive version information files based on Git repository data with TypeScript support",
   "main": "index.js",
   "types": "index.d.ts",
@@ -53,6 +53,7 @@
     "test:basic": "node test-generate-version.js --path test-output --files json,js",
     "test:full": "node test-generate-version.js --path test-output --files json,js,txt,ts",
     "test:minimal": "node test-generate-version.js --path test-output --files json --no-author --no-commit-date",
+    "test:generate-on-dev": "node test-generate-version.js --path test-output --files json,js --generate-on-dev=false",
     "test:help": "node test-generate-version.js --help",
     "lint": "eslint *.js lib/*.js",
     "format": "prettier --write *.js lib/*.js *.json *.md",
