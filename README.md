@@ -11,6 +11,10 @@
 - 🚫 **错误容错**: 优雅处理非Git环境和各种边界情况
 - ⚡ **性能优化**: 智能缓存和按需生成
 - 🎨 **智能注入**: 自动将版本脚本注入到HTML中
+- 🧰 **强大工具类**: 提供丰富的版本信息获取、比较和格式化工具
+- 🔄 **版本比较**: 内置版本号比较和检查功能
+- 🕒 **时间格式化**: 智能的构建时间格式化和相对时间显示
+- 🎨 **可视化组件**: 支持生成版本徽章和美化显示
 
 ## 📦 安装
 
@@ -167,7 +171,77 @@ generateVersion({
 
 ## 🌐 在应用中使用
 
-### JavaScript
+### 使用工具类（推荐）
+
+插件提供了强大的工具类 `utils.js`，简化版本信息的获取和使用：
+
+```javascript
+import {
+  getVersion,
+  getBranch,
+  getVersionSummary,
+  printVersionInfo,
+  compareVersions,
+  isNewerThan,
+  formatBuildTime,
+  getBuildTimeAgo,
+  createVersionBadge
+} from 'vite-plugin-generate-version/utils.js'
+
+// 基础信息获取
+console.log('版本:', getVersion())           // "1.2.3"
+console.log('分支:', getBranch())             // "main"
+console.log('摘要:', getVersionSummary())     // "v1.2.3 main @abc1234"
+
+// 版本比较
+console.log(compareVersions('1.2.3', '1.2.4'))  // -1
+console.log(isNewerThan('1.2.0'))               // true
+
+// 时间格式化
+console.log(formatBuildTime())     // "2025-09-18 14:30:25"
+console.log(getBuildTimeAgo())     // "2小时前"
+
+// 控制台打印（支持样式和详细模式）
+printVersionInfo({ detailed: true, styled: true })
+
+// 创建版本徽章
+const badge = createVersionBadge({ style: 'rounded', color: 'green' })
+document.getElementById('version').innerHTML = badge
+```
+
+### 工具类API参考
+
+#### 基础信息获取
+- `getVersionInfo()` - 获取完整版本信息对象
+- `getVersion()` - 获取版本号
+- `getTag()` - 获取Git标签
+- `getBranch()` - 获取分支名
+- `getCommitHash()` - 获取提交哈希（短）
+- `getFullCommitHash()` - 获取完整提交哈希
+- `getCommitDate()` - 获取提交时间
+- `getAuthor()` - 获取提交者
+- `getBuildTime()` - 获取构建时间（ISO格式）
+- `getBuildTimeFormatted()` - 获取格式化的构建时间
+
+#### 状态检查
+- `isVersionInfoAvailable()` - 检查版本信息是否可用
+- `getVersionSummary()` - 获取版本信息摘要
+
+#### 版本比较
+- `compareVersions(v1, v2)` - 比较两个版本号
+- `isNewerThan(version)` - 检查是否比指定版本新
+- `isOlderThan(version)` - 检查是否比指定版本旧
+
+#### 时间格式化
+- `formatBuildTime(locale, options)` - 自定义格式化构建时间
+- `getBuildTimeAgo()` - 获取构建时间距离现在的时长
+
+#### 显示功能
+- `printVersionInfo(options)` - 打印版本信息到控制台
+- `createVersionBadge(options)` - 创建版本信息徽章HTML
+
+### 直接访问（传统方式）
+
 ```javascript
 // 访问版本信息
 console.log('当前版本:', window.VERSION_INFO.version)
@@ -190,19 +264,56 @@ const buildTime: string = VERSION_INFO.buildTime
 ### React示例
 ```tsx
 import React from 'react'
+import { 
+  getVersion, 
+  getBranch, 
+  getBuildTimeFormatted, 
+  getBuildTimeAgo,
+  createVersionBadge 
+} from 'vite-plugin-generate-version/utils.js'
 
 const VersionDisplay: React.FC = () => {
-  const version = window.VERSION_INFO
-
   return (
     <div className="version-info">
       <h3>版本信息</h3>
-      <p>版本: {version.version}</p>
-      <p>构建时间: {version.buildTimeFormatted}</p>
-      <p>提交: {version.commitHash}</p>
+      <p>版本: {getVersion()}</p>
+      <p>分支: {getBranch()}</p>
+      <p>构建时间: {getBuildTimeFormatted()} ({getBuildTimeAgo()})</p>
+      <div dangerouslySetInnerHTML={{ 
+        __html: createVersionBadge({ style: 'rounded', color: '#52c41a' }) 
+      }} />
     </div>
   )
 }
+```
+
+### Vue示例
+```vue
+<template>
+  <div class="version-info">
+    <h3>版本信息</h3>
+    <p>版本: {{ version }}</p>
+    <p>分支: {{ branch }}</p>
+    <p>构建时间: {{ buildTime }} ({{ buildTimeAgo }})</p>
+    <div v-html="versionBadge"></div>
+  </div>
+</template>
+
+<script setup>
+import { 
+  getVersion, 
+  getBranch, 
+  getBuildTimeFormatted, 
+  getBuildTimeAgo,
+  createVersionBadge 
+} from 'vite-plugin-generate-version/utils.js'
+
+const version = getVersion()
+const branch = getBranch()
+const buildTime = getBuildTimeFormatted()
+const buildTimeAgo = getBuildTimeAgo()
+const versionBadge = createVersionBadge({ style: 'rounded', color: '#409eff' })
+</script>
 ```
 
 ## 🔧 故障排除
@@ -237,6 +348,15 @@ MIT License
 - [问题反馈](https://github.com/your-username/vite-plugin-generate-version/issues)
 
 ## 📋 更新日志
+
+### 1.1.0
+- 🧰 **新增强大工具类**: 提供完整的版本信息操作API
+- 🔄 **版本比较功能**: 支持版本号比较和检查
+- 🕒 **时间格式化增强**: 智能的相对时间显示（如"2小时前"）
+- 🎨 **版本徽章生成**: 支持创建可定制的版本信息徽章
+- 🗑️ **历史文件清理**: 支持生成前自动清理历史版本文件
+- 🔧 **环境兼容性**: 增强浏览器和Node.js环境的兼容性
+- 📚 **文档完善**: 新增详细的API文档和使用示例
 
 ### 1.0.0
 - 🎉 初始版本发布
