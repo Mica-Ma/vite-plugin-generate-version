@@ -3,33 +3,11 @@
  * 提供版本信息获取、比较和格式化功能的类型定义
  */
 
-/**
- * 版本信息接口定义
- */
-export interface VersionInfo {
-  /** 版本号（从分支名提取） */
-  version: string
-  /** Git标签 */
-  tag: string | null
-  /** Git分支名 */
-  branch: string
-  /** 短格式提交哈希 */
-  commitHash: string
-  /** 完整格式提交哈希 */
-  fullCommitHash: string
-  /** 提交日期（可选） */
-  commitDate?: string
-  /** 提交者（可选） */
-  author?: string
-  /** 构建时间（ISO格式） */
-  buildTime: string
-  /** 格式化的构建时间 */
-  buildTimeFormatted: string
-  /** 生成时间（同buildTime） */
-  generatedAt: string
-  /** 自定义字段 */
-  [key: string]: any
-}
+// 导入主包的类型定义
+import type { VersionInfo } from './index'
+
+// 重新导出 VersionInfo 类型以保持向后兼容
+export type { VersionInfo }
 
 /**
  * 版本比较结果
@@ -217,8 +195,8 @@ export declare function createVersionBadge(options?: BadgeOptions): string
 /**
  * 默认导出版本信息获取函数
  */
-declare const getVersionInfo: () => VersionInfo | null
-export default getVersionInfo
+declare const _getVersionInfo: () => VersionInfo | null
+export default _getVersionInfo
 
 // ==================== 扩展全局类型 ====================
 
