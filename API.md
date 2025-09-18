@@ -4,6 +4,7 @@
 
 ### 导入方式
 
+#### JavaScript
 ```javascript
 // ES模块导入
 import {
@@ -17,6 +18,25 @@ import {
 
 // 默认导入
 import getVersionInfo from 'vite-plugin-generate-version/utils.js'
+```
+
+#### TypeScript
+```typescript
+// 带类型的导入
+import {
+  getVersionInfo,
+  getVersion,
+  getBranch,
+  printVersionInfo,
+  compareVersions,
+  type VersionInfo,
+  type CompareResult,
+  type PrintOptions,
+  type BadgeOptions
+} from 'vite-plugin-generate-version/utils'
+
+// 或者使用 .js 扩展名
+import type { VersionInfo } from 'vite-plugin-generate-version/utils.js'
 ```
 
 ## 基础信息获取
@@ -286,9 +306,172 @@ interface VersionInfo {
 - 错误会在控制台输出警告信息
 - 不会抛出异常，确保应用稳定运行
 
+## TypeScript 支持
+
+### 类型定义
+
+插件提供了完整的TypeScript类型定义：
+
+```typescript
+// 版本信息接口
+interface VersionInfo {
+  version: string
+  tag: string | null
+  branch: string
+  commitHash: string
+  fullCommitHash: string
+  commitDate?: string
+  author?: string
+  buildTime: string
+  buildTimeFormatted: string
+  generatedAt: string
+  [key: string]: any
+}
+
+// 版本比较结果
+type CompareResult = -1 | 0 | 1
+
+// 打印选项
+interface PrintOptions {
+  detailed?: boolean
+  styled?: boolean
+}
+
+// 徽章选项
+interface BadgeOptions {
+  style?: 'flat' | 'rounded'
+  color?: string
+}
+
+// 时间格式化选项
+interface FormatTimeOptions {
+  year?: 'numeric' | '2-digit'
+  month?: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow'
+  day?: 'numeric' | '2-digit'
+  hour?: 'numeric' | '2-digit'
+  minute?: 'numeric' | '2-digit'
+  second?: 'numeric' | '2-digit'
+  timeZone?: string
+  hour12?: boolean
+}
+```
+
+### TypeScript 使用示例
+
+#### 基础使用
+```typescript
+import { getVersionInfo, type VersionInfo } from 'vite-plugin-generate-version/utils'
+
+const versionInfo: VersionInfo | null = getVersionInfo()
+if (versionInfo) {
+  console.log(`版本: ${versionInfo.version}`)
+}
+```
+
+#### React组件
+```tsx
+import React from 'react'
+import { getVersionInfo, createVersionBadge, type VersionInfo } from 'vite-plugin-generate-version/utils'
+
+interface VersionDisplayProps {
+  showDetailed?: boolean
+}
+
+const VersionDisplay: React.FC<VersionDisplayProps> = ({ showDetailed = false }) => {
+  const versionInfo: VersionInfo | null = getVersionInfo()
+  
+  if (!versionInfo) {
+    return <div>版本信息不可用</div>
+  }
+
+  return (
+    <div>
+      <p>版本: {versionInfo.version}</p>
+      <div dangerouslySetInnerHTML={{ 
+        __html: createVersionBadge({ style: 'rounded', color: '#52c41a' }) 
+      }} />
+    </div>
+  )
+}
+```
+
+#### 自定义Hook
+```typescript
+import { useState, useEffect } from 'react'
+import { getVersionInfo, type VersionInfo } from 'vite-plugin-generate-version/utils'
+
+interface UseVersionInfoReturn {
+  versionInfo: VersionInfo | null
+  isLoading: boolean
+  error: string | null
+}
+
+export function useVersionInfo(): UseVersionInfoReturn {
+  const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    try {
+      const info = getVersionInfo()
+      setVersionInfo(info)
+      setError(null)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '获取版本信息失败')
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  return { versionInfo, isLoading, error }
+}
+```
+
+#### 类型守卫
+```typescript
+import type { VersionInfo } from 'vite-plugin-generate-version/utils'
+
+function isValidVersionInfo(obj: any): obj is VersionInfo {
+  return obj &&
+    typeof obj === 'object' &&
+    typeof obj.version === 'string' &&
+    typeof obj.branch === 'string' &&
+    typeof obj.commitHash === 'string' &&
+    typeof obj.buildTime === 'string'
+}
+
+// 使用类型守卫
+const data: unknown = getVersionInfo()
+if (isValidVersionInfo(data)) {
+  // 这里 data 的类型是 VersionInfo
+  console.log(data.version)
+}
+```
+
+### 全局类型扩展
+
+插件自动扩展了全局类型：
+
+```typescript
+// 这些类型会自动可用
+declare global {
+  interface Window {
+    VERSION_INFO: VersionInfo
+  }
+  
+  interface GlobalThis {
+    VERSION_INFO: VersionInfo
+  }
+}
+
+// 可以直接使用
+const version = window.VERSION_INFO.version
+```
+
 ## 使用建议
 
 1. **优先使用工具类**: 相比直接访问 `window.VERSION_INFO`，工具类提供更好的错误处理和类型安全
 2. **版本比较**: 使用 `compareVersions` 进行版本号比较，支持语义化版本
 3. **时间显示**: 使用 `getBuildTimeAgo()` 提供更友好的时间显示
 4. **调试信息**: 使用 `printVersionInfo({ detailed: true })` 输出完整的调试信息
+5. **TypeScript项目**: 充分利用类型定义，获得更好的开发体验和类型安全

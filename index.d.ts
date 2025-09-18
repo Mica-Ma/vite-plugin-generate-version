@@ -110,9 +110,17 @@ declare function generateVersionVitePlugin(options?: PluginOptions): VitePluginG
 export default generateVersionVitePlugin
 export { generateVersionVitePlugin }
 
+// 重新导出工具类类型
+export type { VersionInfo, CompareResult, PrintOptions, BadgeOptions, FormatTimeOptions } from './utils'
+
 // 扩展全局类型
 declare global {
   interface Window {
+    /** 版本信息对象 */
+    VERSION_INFO: VersionInfo
+  }
+
+  interface GlobalThis {
     /** 版本信息对象 */
     VERSION_INFO: VersionInfo
   }

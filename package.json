@@ -1,9 +1,27 @@
 {
   "name": "vite-plugin-generate-version",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A powerful Vite plugin that automatically generates comprehensive version information files based on Git repository data with TypeScript support",
   "main": "index.js",
   "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "require": "./index.js"
+    },
+    "./utils": {
+      "types": "./utils.d.ts",
+      "import": "./utils.js",
+      "require": "./utils.js"
+    },
+    "./utils.js": {
+      "types": "./utils.d.ts",
+      "import": "./utils.js",
+      "require": "./utils.js"
+    },
+    "./package.json": "./package.json"
+  },
   "keywords": [
     "vite",
     "vite-plugin",
@@ -24,8 +42,11 @@
   "files": [
     "index.js",
     "index.d.ts",
+    "utils.js",
+    "utils.d.ts",
     "lib/",
     "README.md",
+    "API.md",
     "CHANGELOG.md"
   ],
   "engines": {
