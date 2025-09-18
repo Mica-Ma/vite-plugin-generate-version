@@ -176,6 +176,7 @@ generateVersion({
 插件提供了强大的工具类 `utils.js`，简化版本信息的获取和使用：
 
 ```javascript
+// ES6 模块导入
 import {
   getVersion,
   getBranch,
@@ -187,6 +188,9 @@ import {
   getBuildTimeAgo,
   createVersionBadge
 } from 'vite-plugin-generate-version/utils.js'
+
+// 或者默认导入
+import getVersionInfo from 'vite-plugin-generate-version/utils.js'
 
 // 基础信息获取
 console.log('版本:', getVersion())           // "1.2.3"

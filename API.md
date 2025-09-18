@@ -4,7 +4,7 @@
 
 ### 导入方式
 
-#### JavaScript
+#### JavaScript (ES6 模块)
 ```javascript
 // ES模块导入
 import {
@@ -18,6 +18,9 @@ import {
 
 // 默认导入
 import getVersionInfo from 'vite-plugin-generate-version/utils.js'
+
+// 混合导入
+import getVersionInfo, { getVersion, getBranch } from 'vite-plugin-generate-version/utils.js'
 ```
 
 #### TypeScript

@@ -3,7 +3,7 @@
  * @Date: 2025-09-18 09:04:23
  * @LastEditors: machao
  * @Description: 版本信息工具类 - 提供版本信息获取、比较和格式化功能
- * @LastEditTime: 2025-09-18 09:07:07
+ * @LastEditTime: 2025-09-18 09:46:56
  */
 
 /**
@@ -366,35 +366,3 @@ export function createVersionBadge(options = {}) {
 
 // 默认导出版本信息获取函数
 export default getVersionInfo
-
-// 导出所有功能函数
-export {
-  // 基础信息获取
-  getVersionInfo,
-  getVersion,
-  getTag,
-  getBranch,
-  getCommitHash,
-  getFullCommitHash,
-  getCommitDate,
-  getAuthor,
-  getBuildTime,
-  getBuildTimeFormatted,
-
-  // 状态检查
-  isVersionInfoAvailable,
-  getVersionSummary,
-
-  // 版本比较
-  compareVersions,
-  isNewerThan,
-  isOlderThan,
-
-  // 时间格式化
-  formatBuildTime,
-  getBuildTimeAgo,
-
-  // 显示功能
-  printVersionInfo,
-  createVersionBadge,
-}
